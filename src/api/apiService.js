@@ -1,7 +1,10 @@
 // frontend/src/api/apiService.js
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+// Lógica de ambiente:
+// Se existir a variável de ambiente VITE_API_URL (definida na Vercel), usa ela.
+// Caso contrário, usa localhost (para desenvolvimento local).
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -24,14 +27,12 @@ export const loginUser = async (username, password) => {
   const response = await api.post('/token', formData);
   const data = response.data;
 
-  // --- CORREÇÃO DE MAPEAMENTO ---
-  // O backend envia "is_admin", mas o frontend usa "isAdmin"
   return {
     access_token: data.access_token,
     token_type: data.token_type,
-    isAdmin: data.is_admin,               // Mapeia is_admin -> isAdmin
+    isAdmin: data.is_admin,
     nome: data.nome,
-    mustChangePassword: data.must_change_password // Mapeia snake_case -> camelCase
+    mustChangePassword: data.must_change_password
   };
 };
 
@@ -79,17 +80,23 @@ export const resetUserPassword = async (userId) => {
 // --- Calculadora ---
 export const calculateDistances = async (formData) => {
   try {
+    // Nota: Removida a barra inicial extra que poderia causar url dupla //api
     const response = await api.post('/api/calculate-distances/', formData);
     return response.data;
   } catch (error) {
     if (error.response) throw new Error(error.response.data.detail || 'Erro no servidor.');
-    throw new Error('Erro de conexão.');
+    throw new Error('Erro de conexão ou servidor offline.');
   }
 };
 
 export const downloadErrorFile = (fileUrl) => {
+  // Constrói a URL completa usando a base dinâmica
+  // Remove barra inicial do fileUrl se existir para evitar duplicidade com a base que já pode ter barra ou não
+  const cleanUrl = fileUrl.startsWith('/') ? fileUrl.substring(1) : fileUrl;
+  const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`;
+  
   const link = document.createElement('a');
-  link.href = `${API_BASE_URL}${fileUrl}`;
+  link.href = `${baseUrl}${cleanUrl}`;
   link.setAttribute('download', 'relatorio_erros.xlsx');
   document.body.appendChild(link);
   link.click();
