@@ -1,9 +1,7 @@
 // frontend/src/api/apiService.js
 import axios from 'axios';
 
-// Lógica de ambiente:
-// Se existir a variável de ambiente VITE_API_URL (definida na Vercel), usa ela.
-// Caso contrário, usa localhost (para desenvolvimento local).
+// Em produção (Vercel), usa a variável de ambiente. Localmente, usa localhost.
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const api = axios.create({
@@ -80,7 +78,7 @@ export const resetUserPassword = async (userId) => {
 // --- Calculadora ---
 export const calculateDistances = async (formData) => {
   try {
-    // Nota: Removida a barra inicial extra que poderia causar url dupla //api
+    // A barra "/" inicial foi removida para evitar duplicação se a BASE_URL tiver barra
     const response = await api.post('/api/calculate-distances/', formData);
     return response.data;
   } catch (error) {
@@ -90,8 +88,7 @@ export const calculateDistances = async (formData) => {
 };
 
 export const downloadErrorFile = (fileUrl) => {
-  // Constrói a URL completa usando a base dinâmica
-  // Remove barra inicial do fileUrl se existir para evitar duplicidade com a base que já pode ter barra ou não
+  // Tratamento para garantir URL correta no download
   const cleanUrl = fileUrl.startsWith('/') ? fileUrl.substring(1) : fileUrl;
   const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`;
   
