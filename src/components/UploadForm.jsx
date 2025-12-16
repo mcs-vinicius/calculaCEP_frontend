@@ -27,7 +27,7 @@ function UploadForm({ onSubmit, isLoading }) {
   return (
     <Box component="form" onSubmit={handleFormSubmit}>
       
-      {/* SEÇÃO DE ORIGEM - REORGANIZADA PARA "ESTICAR" */}
+      {/* SEÇÃO DE ORIGEM */}
       <Box sx={{ mb: 4 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
           <LocationOnIcon color="primary" />
@@ -35,7 +35,6 @@ function UploadForm({ onSubmit, isLoading }) {
         </Box>
         
         <Grid container spacing={3}>
-          {/* Linha 1: Rua (Grande) e Número (Pequeno) */}
           <Grid item xs={12} md={9}>
             <TextField label="Rua / Logradouro" name="rua" value={baseAddress.rua} onChange={handleInputChange} fullWidth required variant="outlined" />
           </Grid>
@@ -43,7 +42,6 @@ function UploadForm({ onSubmit, isLoading }) {
             <TextField label="Número" name="numero" value={baseAddress.numero} onChange={handleInputChange} fullWidth required variant="outlined" />
           </Grid>
           
-          {/* Linha 2: Bairro, Município e CEP bem distribuídos */}
           <Grid item xs={12} md={5}>
             <TextField label="Bairro" name="bairro" value={baseAddress.bairro} onChange={handleInputChange} fullWidth required variant="outlined" />
           </Grid>
@@ -68,7 +66,8 @@ function UploadForm({ onSubmit, isLoading }) {
         <Alert severity="info" sx={{ mb: 3, borderRadius: 2, bgcolor: theme.palette.mode === 'dark' ? 'rgba(1, 67, 97, 0.3)' : undefined }}>
            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
               <Typography variant="body2">Use o modelo padrão.</Typography>
-              <Button size="small" startIcon={<DownloadIcon />} href="/modelo_pacientes.xlsx" download>Baixar Modelo</Button>
+              {/* CORREÇÃO AQUI: href alterado para modelo_input.xlsx */}
+              <Button size="small" startIcon={<DownloadIcon />} href="/modelo_input.xlsx" download="modelo_input.xlsx">Baixar Modelo</Button>
            </Box>
         </Alert>
 
