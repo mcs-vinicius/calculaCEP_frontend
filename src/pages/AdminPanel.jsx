@@ -16,8 +16,15 @@ import LockResetIcon from '@mui/icons-material/LockReset';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { resetUserPassword } from '../api/apiService'; 
+// Importamos todas as funções do serviço centralizado
+import { 
+  getUsers, 
+  deleteUser, 
+  getWhitelist, 
+  addToWhitelist, 
+  deleteWhitelist, 
+  resetUserPassword 
+} from '../api/apiService';
 
 function TabPanel({ children, value, index }) {
   return <div hidden={value !== index} style={{ padding: '24px 0' }}>{value === index && children}</div>;
@@ -36,16 +43,15 @@ export default function AdminPanel() {
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [tempPassword, setTempPassword] = useState('');
 
-  const getAuthHeader = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
-
   const fetchData = useCallback(async () => {
     try {
-      const [uRes, wRes] = await Promise.all([
-        axios.get('http://localhost:8000/admin/users', getAuthHeader()),
-        axios.get('http://localhost:8000/admin/whitelist', getAuthHeader())
+      // Usando as funções do apiService em vez de axios direto
+      const [uData, wData] = await Promise.all([
+        getUsers(),
+        getWhitelist()
       ]);
-      setUsers(uRes.data);
-      setWhitelist(wRes.data);
+      setUsers(uData);
+      setWhitelist(wData);
     } catch (error) { 
       console.error("Erro ao buscar dados:", error); 
     }
@@ -56,11 +62,11 @@ export default function AdminPanel() {
   const handleAddWhitelist = async () => {
     if (!newMatricula) return;
     try {
-      await axios.post('http://localhost:8000/admin/whitelist', { matricula: newMatricula }, getAuthHeader());
+      await addToWhitelist(newMatricula);
       setNewMatricula(''); 
       fetchData();
     } catch (error) { 
-        console.error(error); // CORREÇÃO: Usando a variável error
+        console.error(error);
         alert('Erro ao adicionar ou matrícula já existe.'); 
     }
   };
@@ -68,7 +74,7 @@ export default function AdminPanel() {
   const handleDeleteWhitelist = async (id) => {
     if(!window.confirm('Remover esta matrícula da lista de espera?')) return;
     try { 
-        await axios.delete(`http://localhost:8000/admin/whitelist/${id}`, getAuthHeader()); 
+        await deleteWhitelist(id); 
         fetchData(); 
     } catch(error) { console.error(error); }
   };
@@ -76,7 +82,7 @@ export default function AdminPanel() {
   const handleDeleteUser = async (id) => {
     if(!window.confirm('Tem certeza que deseja excluir este usuário?')) return;
     try { 
-        await axios.delete(`http://localhost:8000/admin/users/${id}`, getAuthHeader()); 
+        await deleteUser(id); 
         fetchData(); 
     } catch(error) { console.error(error); }
   };
@@ -88,7 +94,7 @@ export default function AdminPanel() {
         setTempPassword(data.temp_password);
         setResetDialogOpen(true);
     } catch (error) {
-        console.error(error); // CORREÇÃO: Usando a variável error
+        console.error(error);
         alert('Erro ao resetar senha.');
     }
   };
