@@ -1,0 +1,146 @@
+/* Container modal que cobre a tela inteira */
+.dl-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5f727c;
+}
+
+.dl-box {
+  position: relative;
+  width: 360px;
+  height: 250px;
+  padding: 20px;
+}
+
+.dl-svg {
+  overflow: visible;
+  display: block;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+}
+
+.dl-svg path {
+  fill: none;
+  stroke-width: 6px;
+  stroke-linecap: round;
+}
+
+.dl-svg__circle {
+  stroke: #879eac;
+}
+
+.dl-svg__arrow {
+  stroke: #fff;
+}
+
+.dl-svg__rotater,
+.dl-svg__triangle,
+.dl-svg__triangle-piece {
+  stroke: #fff;
+  opacity: 0;
+}
+
+.dl-svg__progress-plc {
+  stroke: rgba(255, 255, 255, 0.4);
+  opacity: 0;
+}
+
+.dl-svg__progress,
+.dl-svg__progress-vert,
+.dl-svg__checkmark {
+  stroke: #fff;
+  opacity: 0;
+}
+
+.dl-status {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  left: 0;
+  top: 90px;
+  width: 100%;
+  color: #4c99d9;
+  opacity: 0;
+  transition: 0.3s;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
+.dl-status.s--active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dl-status__numbers {
+  width: 95px;
+  line-height: 1;
+  font-size: 55px;
+  font-weight: bold;
+  text-align: center;
+  transition: 0.3s;
+  color: #fff;
+}
+
+/* A regra .dl-status__perc foi removida daqui */
+
+.particles {
+  position: absolute;
+  height: 1px;
+}
+
+.particles__p {
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transition: all 0.6s;
+}
+
+.particles__p:before,
+.particles__p:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  transition: all 0.6s;
+}
+
+.particles.s--active .particles__p {
+  animation: fadeParticle 0.1s ease-in-out;
+}
+
+.particles.m--stage-2 {
+  left: 241px;
+  top: 50px;
+  width: 200px;
+  transform-origin: 0 0;
+  transform: rotate(63deg);
+}
+
+.particles.m--stage-3 {
+  left: 340px;
+  top: 210px;
+  width: 300px;
+  transform-origin: 0 0;
+  transform: rotate(180deg);
+}
+
+@keyframes fadeParticle {
+  25% { opacity: 1; }
+  100% { opacity: 0; }
+}

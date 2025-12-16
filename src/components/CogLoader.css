@@ -1,0 +1,123 @@
+/* src/components/CogLoader.css */
+
+/* Container principal que cobre a tela toda para criar o efeito modal */
+.loader-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1300; /* Garante que fique acima de todo o conteúdo da página */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b404b33;
+}
+
+.loader {
+  position: relative;
+  width: 400px;
+  height: 400px; /* Aumentado para dar espaço ao texto */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1.65); /* Aumenta o tamanho da animação em 25% */
+  
+}
+
+/* O "buraco" de luz com a sobreposição esbranquiçada em volta */
+.loader_overlay {
+  width: 150px;
+  height: 150px;
+  background: transparent;
+  /* Este é o segredo: uma sombra enorme que cobre tudo, menos o centro */
+  box-shadow: 0px 0px 0px 2000px rgba(255, 255, 255, 0.85);
+  border-radius: 100%;
+  position: absolute;
+}
+
+.loader_cogs {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: calc(50% - 100px); /* Centraliza as engrenagens verticalmente */
+  left: calc(50% - 50px);
+}
+
+.loading-text {
+  position: absolute;
+  top: calc(50% + 50px); /* Posiciona o texto ABAIXO do centro */
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-family: "Fira Code", "Courier New", monospace;
+  font-size: 1.1rem;
+  color: #2d4c5a; /* Tom de cinza profissional */
+  font-weight: 500;
+  text-align: center;
+  top:330px;
+}
+
+/* --- O restante do código de animação das engrenagens --- */
+
+.loader_cogs__top {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  transform-origin: 50px 50px;
+  animation: rotate 10s infinite linear;
+}
+
+.loader_cogs__top .top_part {
+  width: 100px; border-radius: 10px; position: absolute; height: 100px; background: #c7195f;
+}
+.loader_cogs__top div:nth-of-type(1) { transform: rotate(30deg); }
+.loader_cogs__top div:nth-of-type(2) { transform: rotate(60deg); }
+.loader_cogs__top div:nth-of-type(3) { transform: rotate(90deg); }
+.loader_cogs__top .top_hole {
+  width: 50px; height: 50px; border-radius: 100%; background: white; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;
+}
+
+.loader_cogs__left {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  transform: rotate(16deg);
+  top: 28px;
+  left: -24px;
+  transform-origin: 40px 40px;
+  animation: rotate_left 10s 0.1s infinite reverse linear;
+}
+.loader_cogs__left .left_part {
+  width: 80px; border-radius: 6px; position: absolute; height: 80px; background: #6bc0eb;
+}
+.loader_cogs__left div:nth-of-type(1) { transform: rotate(30deg); }
+.loader_cogs__left div:nth-of-type(2) { transform: rotate(60deg); }
+.loader_cogs__left div:nth-of-type(3) { transform: rotate(90deg); }
+.loader_cogs__left .left_hole {
+  width: 40px; height: 40px; border-radius: 100%; background: white; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;
+}
+
+.loader_cogs__bottom {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  top: -65px;
+  left: 79px;
+  transform-origin: 30px 30px;
+  animation: rotate_right 10.2s 0.4s infinite linear;
+  transform: rotate(4deg);
+}
+.loader_cogs__bottom .bottom_part {
+  width: 60px; border-radius: 5px; position: absolute; height: 60px; background: #e4aa37;
+}
+.loader_cogs__bottom div:nth-of-type(1) { transform: rotate(30deg); }
+.loader_cogs__bottom div:nth-of-type(2) { transform: rotate(60deg); }
+.loader_cogs__bottom div:nth-of-type(3) { transform: rotate(90deg); }
+.loader_cogs__bottom .bottom_hole {
+  width: 30px; height: 30px; border-radius: 100%; background: white; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;
+}
+
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes rotate_left { from { transform: rotate(16deg); } to { transform: rotate(376deg); } }
+@keyframes rotate_right { from { transform: rotate(4deg); } to { transform: rotate(364deg); } }
